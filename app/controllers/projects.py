@@ -39,6 +39,16 @@ def get_project(project_name: str) -> Project:
     with open(project_path.joinpath("openscan_project.json")) as f:
         return Project(name=project_name, path=project_path, photos=photos, **orjson.loads(f.read()))
 
+def get_number_stacks(project: Project) -> int:
+    photos = _get_project_photos(project.path)
+
+    # if picture names end with -0,-1,... then we have a focus stack -> counts as only one
+    # remove last two characters and find unique names
+    photos = [i[:-6] for i in photos]
+    num_unique = len(set(photos))
+    # breaks, when >9 focus steps, todo: there is probably a more elegant way
+
+    return num_unique
 
 def delete_project(project: Project) -> bool:
     shutil.rmtree(project.path)
@@ -64,7 +74,15 @@ def add_photo(project: Project, photo: io.BytesIO) -> bool:
     ) as f:
         f.write(photo.read())
         project.photos.append(f.name)
+    return True
 
+def add_stack_photo(project: Project, photo: io.BytesIO, picture_num: int, focus_num: int) -> bool:
+    with open(
+        project.path.joinpath(f"photo_0_{picture_num+1}-{focus_num}.jpg"), "wb"
+    ) as f:
+        f.write(photo.read())
+        project.photos.append(f.name)
+    return True
 
 def compress_project_photos(project: Project) -> IO[bytes]:
     file = TemporaryFile()

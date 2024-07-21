@@ -58,7 +58,7 @@ class Picamera2Camera(CameraController):
         elif focus_val < FOCUS_MIN:
             focus_val = FOCUS_MIN
 
-        picam2 = Picamera2Camera._get_camera(camera, CameraMode.FOCUS)
+        picam2 = Picamera2Camera._get_camera(camera, CameraMode.PHOTO) # CameraMode.FOCUS
         if auto_focus:
             picam2.set_controls({"AfMode": 1})
         else:
@@ -75,5 +75,5 @@ class Picamera2Camera(CameraController):
         # ms to us
         exposure_val = 1000 * exposure_val
 
-        picam2 = Picamera2Camera._get_camera(camera, CameraMode.EXPOSURE)
+        picam2 = Picamera2Camera._get_camera(camera, CameraMode.PHOTO) # CameraMode.EXPOSURE
         picam2.set_controls({"ExposureTime": exposure_val, "AnalogueGain": 1.0})

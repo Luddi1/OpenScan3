@@ -27,6 +27,6 @@ async def move_motor(motor_type: MotorType, degrees: float):
 
 
 @router.post("/{motor_type}/move")
-async def move_motor(motor_type: MotorType, degrees: float = Body(embed=True)):
+async def move_motor(motor_type: MotorType, degrees: float):
     motor = motors.get_motor(motor_type)
     motors.move_motor_degrees(motor, degrees)

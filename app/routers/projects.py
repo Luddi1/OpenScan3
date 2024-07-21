@@ -1,6 +1,7 @@
 from typing import Optional
 from fastapi import APIRouter
 from fastapi.encoders import jsonable_encoder
+import time
 
 from app.controllers import projects
 from app.controllers.cameras import cameras
@@ -39,3 +40,25 @@ async def add_photo(project_name: str, camera_id: int):
     camera_controller = cameras.get_camera_controller(camera)
     photo = camera_controller.photo(camera)
     projects.add_photo(projects.get_project(project_name), photo)
+
+    return True
+
+
+@router.put("/{project_name}/photo_stack", response_model=bool)
+async def add_photo_stack(project_name: str, camera_id: int, focus_min: int, focus_max: int):
+    camera = cameras.get_camera(camera_id)
+    camera_controller = cameras.get_camera_controller(camera)
+    project = projects.get_project(project_name)
+    stack_number = projects.get_number_stacks(project)
+
+    # needs one focusing before stack, todo: debug
+    camera_controller.set_focus(camera, False, focus_min)
+    time.sleep(2.5) # give time to focus, todo: blocking call available?
+
+    for i,f in enumerate(range(focus_min, focus_max+1)):
+        camera_controller.set_focus(camera, False, f)
+        time.sleep(0.5) # give time to focus
+        photo = camera_controller.photo(camera)
+        projects.add_stack_photo(project, photo, stack_number, i)
+
+    return True
