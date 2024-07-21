@@ -1,7 +1,7 @@
 {
-      "direction_pin": 9,
+      "direction_pin": 6,
       "enable_pin": 22,
-      "step_pin": 11,
+      "step_pin": 16,
       "acceleration": 1,
       "acceleration_ramp": 200,
       "delay": 0.0001,

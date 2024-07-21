@@ -11,6 +11,10 @@ from picamera2 import Picamera2
 from app.controllers.cameras.camera import CameraController
 from app.models.camera import Camera, CameraMode
 
+FOCUS_MIN = 0
+FOCUS_MAX = 15
+EXPOSURE_MIN = 1
+EXPOSURE_MAX = 150
 
 class Picamera2Camera(CameraController):
     __camera = [None, None]
@@ -38,7 +42,6 @@ class Picamera2Camera(CameraController):
         data.seek(0)
         return data
 
-
     @staticmethod
     def preview(camera: Camera) -> IO[bytes]:
         data = TemporaryFile()
@@ -46,4 +49,31 @@ class Picamera2Camera(CameraController):
         picam2.capture_file(data, format='jpeg')
         data.seek(0)
         return data
-        # return Picamera2Camera.photo(camera)
+
+    @staticmethod
+    def set_focus(camera: Camera, auto_focus: bool, focus_val: int):
+        # value range check
+        if focus_val > FOCUS_MAX:
+            focus_val = FOCUS_MAX
+        elif focus_val < FOCUS_MIN:
+            focus_val = FOCUS_MIN
+
+        picam2 = Picamera2Camera._get_camera(camera, CameraMode.FOCUS)
+        if auto_focus:
+            picam2.set_controls({"AfMode": 1})
+        else:
+            picam2.set_controls({"AfMode": 0, "LensPosition": focus_val})
+
+    @staticmethod
+    def set_exposure(camera: Camera, exposure_val: int):
+        # value range check
+        if exposure_val > EXPOSURE_MAX:
+            exposure_val = EXPOSURE_MAX
+        elif exposure_val < EXPOSURE_MIN:
+            exposure_val = EXPOSURE_MIN
+
+        # ms to us
+        exposure_val = 1000 * exposure_val
+
+        picam2 = Picamera2Camera._get_camera(camera, CameraMode.EXPOSURE)
+        picam2.set_controls({"ExposureTime": exposure_val, "AnalogueGain": 1.0})

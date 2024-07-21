@@ -41,3 +41,17 @@ async def get_photo(camera_id: int):
     camera = cameras.get_camera(camera_id)
     controller = cameras.get_camera_controller(camera)
     return Response(controller.photo(camera).read(), media_type="image/png")
+
+
+@router.post("/{camera_id}/focus")
+async def set_focus(camera_id: int, auto_focus: bool, focus_value: int):
+    camera = cameras.get_camera(camera_id)
+    controller = cameras.get_camera_controller(camera)
+    return controller.set_focus(camera, auto_focus, focus_value)
+
+
+@router.post("/{camera_id}/exposure")
+async def set_exposure_time(camera_id: int, exposure_value: int):
+    camera = cameras.get_camera(camera_id)
+    controller = cameras.get_camera_controller(camera)
+    return controller.set_exposure(camera, exposure_value)

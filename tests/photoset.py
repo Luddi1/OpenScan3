@@ -2,8 +2,8 @@ import requests
 import time
 
 # lights on
-# for pin in (17, 27):
-#     requests.put(f"http://127.0.0.1:8000/io/{pin}", params={"status": True})
+for pin in (24):
+    requests.put(f"http://127.0.0.1:8000/io/{pin}", params={"status": True})
 
 requests.delete("http://127.0.0.1:8000/projects/openscan_test4")
 requests.post("http://127.0.0.1:8000/projects/openscan_test4")

@@ -22,8 +22,8 @@ class OpenScanConfig:
         cls.motors: dict[str, Motor] = {
             # "tt": OpenScanConfig._load_motor_config("turntable"),
             # "rotor": OpenScanConfig._load_motor_config("rotor"),
-            MotorType.TURNTABLE: Motor(MotorConfig(9, 22, 11, 1, 200, 0.0001, 1, 3200)),
-            MotorType.ROTOR: Motor(MotorConfig(5, 23, 6, 1, 2000, 0.0001, 1, 17067)),
+            MotorType.TURNTABLE: Motor(MotorConfig(6, 22, 16, 1, 200, 0.0001, 1, 3200)),
+            MotorType.ROTOR: Motor(MotorConfig(23, 22, 27, 1, 2000, 0.0001, 1, 17067)),
         }
         cls.projects_path = pathlib.PurePath("projects")
         cls.cloud = CloudSettings(
@@ -32,10 +32,10 @@ class OpenScanConfig:
             os.getenv("OPENSCANCLOUD_KEY"),
             "http://openscanfeedback.dnsuser.de:1334",
         )
-        cls.ring_light_enabled = False
-        cls.ring_light_pins = (17, 27)
+        cls.ring_light_enabled = True
+        cls.ring_light_pins = (24, 26)
 
-        cls.external_camera_pin = 10
+        cls.external_camera_pin = 5
         cls.external_camera_delay = 0.1
 
 
