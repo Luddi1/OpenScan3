@@ -26,22 +26,37 @@ TO BE DONE
 
 #### Installation
 
-1. Clone the repo
+1. Update the system
+
+```sh
+sudo apt update && sudo apt upgrade -y
+```
+
+2. Install some python packages system wide. 
+We need to do this anyway because `python3-picamera2` can not be installed via pip on a RPI4 (Not enough RAM apparently). 
+
+```sh
+sudo apt install -y python3-pip python3-venv python3-uvicorn python3-gphoto2 python3-pillow python3-picamera2 python3-matplotlib python3-fastapi python3-numpy python3-rpi.gpio python3-libcamera
+```
+
+3. Create a python virtual environment, include system-wide packages, and activate venv. 
+
+```sh
+python3 -m venv --system-site-packages openscan-env
+source openscan-env/bin/activate
+```
+
+4. Clone the repo
 
 ```sh
 git clone https://github.com/OpenScan-org/OpenScan3.git
-```
-
-2. cd into the repo
-
-```sh
 cd OpenScan3
 ```
 
-3. Install the necessary dependencies
+5. Install the last necessary dependencies via pip. 
 
 ```sh
-pip install -r requirements.txt
+pip install v4l2py orjson python-dotenv
 ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -51,7 +66,8 @@ pip install -r requirements.txt
 
 To run the api backend run:
 ```sh
-uvicorn app.main:app --host 0.0.0.0
+source openscan-env/bin/activat
+python3 -m uvicorn app.main:app --host 0.0.0.0
 ```
 
 Now the api should be accessible from `http://local_ip:8000`
@@ -95,7 +111,6 @@ TMPDIR=/mnt/ramdisk uvicorn app.main:app --host 0.0.0.0
     - [ ] Network drive
     - [ ] ...
 
-See the [open issues](https://github.com/OpenScan-org/OpenScan3/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
