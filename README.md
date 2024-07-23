@@ -46,7 +46,7 @@ source openscan-env/bin/activate
 4. Clone the repo
 
 ```sh
-git clone https://github.com/OpenScan-org/OpenScan3.git
+git clone https://github.com/Luddi1/OpenScan3.git
 cd OpenScan3
 ```
 
@@ -83,7 +83,6 @@ If don't need a GUI you can already do a focus stack set with `tests/photoset.py
 
 - OpenScanConfig from single settings file
 - Endstop homing routine
-- Debug move_motor_to()
 - Fix gphoto2 in get_cameras()
 - picamera2 _get_camera() should not stop when focus or exposure settings are changed. 
 - get_number_stacks() is hacky

@@ -22,8 +22,8 @@ class OpenScanConfig:
         cls.motors: dict[str, Motor] = {
             # "tt": OpenScanConfig._load_motor_config("turntable"),
             # "rotor": OpenScanConfig._load_motor_config("rotor"),
-            MotorType.TURNTABLE: Motor(MotorConfig(6, 22, 16, 1, 200, 0.0001, 1, 3200)),
-            MotorType.ROTOR: Motor(MotorConfig(23, 22, 27, 1, 2000, 0.0001, 1, 17067)),
+            MotorType.TURNTABLE: Motor(MotorConfig(6, 22, 16, 1, 100, 0.0001, 1, 3200)),
+            MotorType.ROTOR: Motor(MotorConfig(23, 22, 27, 1, 2000, 0.0001, 1, 66000)),
         }
         cls.projects_path = pathlib.PurePath("projects")
         cls.cloud = CloudSettings(
