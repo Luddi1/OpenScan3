@@ -10,6 +10,9 @@ from app.models.motor import Motor, MotorType
 
 from app.controllers import gpio
 
+def _sign(num):
+    return -1 if num < 0 else 1
+
 def get_motors() -> dict[MotorType, Motor]:
     return config.motors
 
@@ -19,7 +22,8 @@ def get_motor(motor_type: MotorType) -> Optional[Motor]:
 
 
 def move_motor_to(motor: Motor, degrees: float):
-    degrees %= 360
+    _sign(degrees) * (abs(degrees)%360)
+
     move_angles = degrees - motor.angle
     move_motor_degrees(motor, move_angles)
 
@@ -55,4 +59,6 @@ def move_motor_degrees(motor: Motor, degrees: float):
         gpio.set_pin(motor.settings.step_pin, False)
         time.sleep(delay)
 
-    motor.angle = (motor.angle + degrees) % 360
+    motor.angle = motor.angle + degrees
+    motor.angle = _sign(motor.angle) * (abs(motor.angle)%360)
+
