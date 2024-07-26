@@ -83,8 +83,6 @@ If don't need a GUI you can already do a focus stack set with `tests/photoset.py
 
 - Endstop homing routine
 - Fix gphoto2 in get_cameras()
-- picamera2 _get_camera() should not stop when focus or exposure settings are changed. 
-- get_number_stacks() is hacky
 - Adjust /scanning for focus stacking
 - OpenScanConfig from single settings file
 - Download zip via API (compress_project_photos())

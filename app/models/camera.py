@@ -7,8 +7,6 @@ from app.config.camera import CameraSettings
 class CameraMode(Enum):
     PHOTO = "photo"
     PREVIEW = "preview"
-    FOCUS = "focus"
-    EXPOSURE = "exposure"
 
 class CameraType(Enum):
     GPHOTO2 = "gphoto2"
