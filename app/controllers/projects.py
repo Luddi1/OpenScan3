@@ -43,10 +43,9 @@ def get_number_stacks(project: Project) -> int:
     photos = _get_project_photos(project.path)
 
     # if picture names end with -0,-1,... then we have a focus stack -> counts as only one
-    # remove last two characters and find unique names
-    photos = [i[:-6] for i in photos]
-    num_unique = len(set(photos))
-    # breaks, when >9 focus steps, todo: there is probably a more elegant way
+    photos = [p.rsplit('.')[0] for p in photos] # remove extension
+    photos = [''.join(p.rsplit('-')[:-1]) if '-' in p else p for p in photos] # remove trailing number for focus step
+    num_unique = len(set(photos)) # find unique names
 
     return num_unique
 
