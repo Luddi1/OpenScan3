@@ -8,10 +8,14 @@ GPIO.setmode(GPIO.BCM)
 _pin_status = {}
 
 
-def _initialize_pin(pin: int):
+def _initialize_output_pin(pin: int):
     _pin_status[pin] = False
     GPIO.setup(pin, GPIO.OUT)
     GPIO.output(pin, False)
+
+
+def _initialize_input_pin(pin: int):
+    GPIO.setup(pin, GPIO.IN)
 
 
 def _initialize_pins():
@@ -22,8 +26,12 @@ def _initialize_pins():
         *[motor.settings.step_pin for motor in config.motors.values()],
         config.external_camera_pin
     ]:
-        _initialize_pin(pin)
+        _initialize_output_pin(pin)
 
+    for pin in [
+        *[motor.settings.endstop_pin for motor in config.motors.values() if motor.settings.endstop_pin is not None],
+    ]:
+        _initialize_input_pin(pin)
 
 def toggle_pin(pin: int):
     set_pin(pin, not _pin_status[pin])
@@ -40,6 +48,10 @@ def get_pins():
 
 def get_pin(pin: int):
     return _pin_status[pin]
+
+
+def read_input_pin(pin: int):
+    return GPIO.input(pin)
 
 
 _initialize_pins()

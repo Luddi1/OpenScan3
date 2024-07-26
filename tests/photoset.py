@@ -9,6 +9,7 @@ requests.delete("http://127.0.0.1:8000/projects/openscan_test")
 requests.post("http://127.0.0.1:8000/projects/openscan_test")
 
 # Set camera values
+requests.post("http://127.0.0.1:8000/cameras/0/photo")
 requests.post("http://127.0.0.1:8000/cameras/0/exposure", params={"exposure_value": 45})
 
 # rotor has to stand level, in middle of range

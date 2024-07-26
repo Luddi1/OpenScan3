@@ -20,6 +20,25 @@ def get_motors() -> dict[MotorType, Motor]:
 def get_motor(motor_type: MotorType) -> Optional[Motor]:
     return config.motors.get(motor_type)
 
+def home_motor(motor: Motor):
+    if motor.settings.endstop_pin is None:
+        return
+
+    spr = motor.settings.steps_per_rotation
+    dir = motor.settings.direction
+    delay_init = motor.settings.delay
+    delay = delay_init
+
+    gpio.set_pin(motor.settings.direction_pin, dir)
+    while (not gpio.read_input_pin(motor.settings.endstop_pin)):
+        gpio.set_pin(motor.settings.step_pin, True)
+        time.sleep(delay)
+        gpio.set_pin(motor.settings.step_pin, False)
+        time.sleep(delay)
+
+    # moved to endstop, set degrees to predefined value
+    motor.angle = motor.settings.endstop_angle
+    motor.is_homed = True
 
 def move_motor_to(motor: Motor, degrees: float):
     _sign(degrees) * (abs(degrees)%360)
@@ -35,6 +54,13 @@ def move_motor_degrees(motor: Motor, degrees: float):
     acc = motor.settings.acceleration
     delay_init = motor.settings.delay
     delay = delay_init
+
+    # check if within bounds
+    if motor.is_homed:
+        if (motor.angle + degrees) > motor.settings.endstop_angle:
+            return # todo: throw error or exception
+        if (motor.angle - degrees) < motor.settings.max_angle:
+            return # todo: throw error or exception
 
     step_count = int(degrees * spr / 360) * dir
 

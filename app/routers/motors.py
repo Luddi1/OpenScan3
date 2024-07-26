@@ -20,6 +20,12 @@ async def get_motor(motor_type: MotorType):
     return motors.get_motor(motor_type)
 
 
+@router.post("/{motor_type}/home")
+async def move_motor(motor_type: MotorType):
+    motor = motors.get_motor(motor_type)
+    motors.home_motor(motor)
+
+
 @router.post("/{motor_type}/move_to")
 async def move_motor(motor_type: MotorType, degrees: float):
     motor = motors.get_motor(motor_type)

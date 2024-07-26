@@ -81,7 +81,8 @@ If don't need a GUI you can already do a focus stack set with `tests/photoset.py
 <!-- ROADMAP -->
 ## Roadmap
 
-- Endstop homing routine
+- Add safety timeout, to endstop homing routine
+- Check if motor dir settings works with endstop_angle, max_angle in both directions
 - Fix gphoto2 in get_cameras()
 - Adjust /scanning for focus stacking
 - OpenScanConfig from single settings file

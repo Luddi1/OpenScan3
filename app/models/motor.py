@@ -13,4 +13,5 @@ class Motor:
     settings: Optional[MotorConfig]
 
     angle: float = 0
+    is_homed: bool = False
 
