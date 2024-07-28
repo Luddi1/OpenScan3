@@ -7,6 +7,8 @@
 
 OpenScan3 is a firmware for controlling OpenScan devices, a family of OpenSource and OpenHardware devices designed to make photogrammetry accessible to everyone.
 
+This fork of OS3 is currently only tested on an OpenScan midi, with RPi4, the new (black) shield, and imx519 camera. 
+
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
@@ -67,21 +69,27 @@ source ~/openscan-env/bin/activate
 cd ~/OpenScan3
 python3 -m uvicorn app.main:app --host 0.0.0.0
 ```
+Adjust the pin numbers for your setup in `app/config/openscan.py`. 
+Currently, it is setup for the new (black) shield. 
 
-Now the api should be accessible from `http://local_ip:8000`
-
+Now the api should be accessible from `http://local_ip:8000`. 
 To access an api playground go to `http://local_ip:8000/docs`
 
 If don't need a GUI you can already do a focus stack set with `tests/photoset.py`. 
-
-
+Open another SSH session, then run 
+```sh
+source ~/openscan-env/bin/activate
+cd ~/OpenScan3/tests
+python3 photoset.py
+```
+Adjust values to your needs, before. 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- ROADMAP -->
 ## Roadmap
 
-- Add safety timeout, to endstop homing routine
+- Add safety timeout to endstop homing routine
 - Check if motor dir settings works with endstop_angle, max_angle in both directions
 - Fix gphoto2 in get_cameras()
 - Adjust /scanning for focus stacking

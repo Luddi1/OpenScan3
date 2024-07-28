@@ -27,19 +27,18 @@ def get_cameras() -> list[Camera]:
         ]
     )
 
-# crashes currently
-#    gphoto2_cameras = gp.Camera.autodetect()
-#    cameras.extend(
-#        [
-#            Camera(
-#                type=CameraType.GPHOTO2,
-#                name=c[0],
-#                path=c[1],
-#                settings=get_camera_settings(c[0]),
-#            )
-#            for c in gphoto2_cameras
-#        ]
-#    )
+    gphoto2_cameras = gp.Camera.autodetect()
+    cameras.extend(
+        [
+            Camera(
+                type=CameraType.GPHOTO2,
+                name=c[0],
+                path=c[1],
+                settings=get_camera_settings(c[0]),
+            )
+            for c in gphoto2_cameras
+        ]
+    )
 
     picameras = iter_video_capture_devices()
     cameras.extend(
