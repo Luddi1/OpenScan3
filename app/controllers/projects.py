@@ -52,6 +52,7 @@ def get_number_stacks(project: Project) -> int:
 
 def delete_project(project: Project) -> bool:
     shutil.rmtree(project.path)
+    return True
 
 def save_project(project: Project):
     os.makedirs(project.path, exist_ok=True)
