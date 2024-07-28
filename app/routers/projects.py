@@ -44,7 +44,7 @@ async def add_photo(project_name: str, camera_id: int):
     return True
 
 
-@router.put("/{project_name}/photo_stack", response_model=bool)
+@router.put("/{project_name}/focus_stack", response_model=bool)
 async def add_photo_stack(project_name: str, camera_id: int, focus_min: int, focus_max: int):
     camera = cameras.get_camera(camera_id)
     camera_controller = cameras.get_camera_controller(camera)

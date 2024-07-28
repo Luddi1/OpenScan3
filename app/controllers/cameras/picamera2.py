@@ -32,7 +32,6 @@ class Picamera2Camera(CameraController):
             if mode == CameraMode.PHOTO:
                 cls.__camera[0].configure(cls.__camera[0].create_still_configuration())
             elif mode == CameraMode.PREVIEW:
-                #cls.__camera[0].configure(cls.__camera[0].create_preview_configuration(buffer_count=2,  main={"size": (1280, 720)}))
                 cls.__camera[0].configure(cls.__camera[0].create_preview_configuration(buffer_count=2, raw={"size":(4656,3496)}, main={"size": (640, 480)}))
                 
             cls.__camera[0].start()
