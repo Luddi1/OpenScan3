@@ -91,10 +91,11 @@ Adjust values to your needs, before.
 
 - Add safety timeout to endstop homing routine
 - Check if motor dir settings works with endstop_angle, max_angle in both directions
-- Fix gphoto2 in get_cameras()
+- Rotate images 90 degrees
 - Adjust /scanning for focus stacking
 - OpenScanConfig from single settings file
 - Download zip via API (compress_project_photos())
+- Add histogram to preview
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
