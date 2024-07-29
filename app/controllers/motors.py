@@ -48,6 +48,10 @@ def home_motor(motor_type: MotorType, motor: Motor):
     logger.info(f'Homed {motor_type}')
 
 def move_motor_to(motor: Motor, degrees: float):
+    if (motor.settings.endstop_pin is not None) and (not motor.is_homed):
+        logger.warning(f'Motor has endstop but is not homed. move_motor_to() not supported.')
+        return
+
     _sign(degrees) * (abs(degrees)%360)
 
     move_angles = degrees - motor.angle
