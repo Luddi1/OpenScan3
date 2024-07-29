@@ -53,7 +53,7 @@ async def add_photo_stack(project_name: str, camera_id: int, focus_min: int, foc
 
     # needs one focusing before stack, todo: debug
     camera_controller.set_focus(camera, False, focus_min)
-    time.sleep(2.5) # give time to focus, todo: blocking call available?
+    time.sleep(2.0) # give time to focus, todo: blocking call available?
 
     for i,f in enumerate(range(focus_min, focus_max+1)):
         camera_controller.set_focus(camera, False, f)

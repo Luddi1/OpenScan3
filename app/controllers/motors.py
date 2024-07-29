@@ -1,5 +1,6 @@
 import time
 import math
+import logging
 
 from enum import Enum
 from typing import Optional
@@ -9,6 +10,9 @@ from app.config.motor import MotorConfig
 from app.models.motor import Motor, MotorType
 
 from app.controllers import gpio
+
+logger = logging.getLogger('uvicorn.error')
+logger.setLevel(logging.DEBUG)
 
 def _sign(num):
     return -1 if num < 0 else 1
@@ -20,8 +24,9 @@ def get_motors() -> dict[MotorType, Motor]:
 def get_motor(motor_type: MotorType) -> Optional[Motor]:
     return config.motors.get(motor_type)
 
-def home_motor(motor: Motor):
+def home_motor(motor_type: MotorType, motor: Motor):
     if motor.settings.endstop_pin is None:
+        logger.warning(f'No endstop defined for motor {motor_type}.')
         return
 
     spr = motor.settings.steps_per_rotation
@@ -40,6 +45,8 @@ def home_motor(motor: Motor):
     motor.angle = motor.settings.endstop_angle
     motor.is_homed = True
 
+    logger.info(f'Homed {motor_type}')
+
 def move_motor_to(motor: Motor, degrees: float):
     _sign(degrees) * (abs(degrees)%360)
 
@@ -57,10 +64,12 @@ def move_motor_degrees(motor: Motor, degrees: float):
 
     # check if within bounds
     if motor.is_homed:
-        if (motor.angle + degrees) > motor.settings.endstop_angle:
-            return # todo: throw error or exception
-        if (motor.angle - degrees) < motor.settings.max_angle:
-            return # todo: throw error or exception
+        if (motor.angle + degrees) > motor.settings.max_angle:
+            logger.warning(f'{(motor.angle + degrees)} deg is out of bounds {motor.settings.max_angle} deg for homed motor.')
+            return
+        if (motor.angle + degrees) < motor.settings.endstop_angle:
+            logger.warning(f'{(motor.angle - degrees)} deg is out of bounds {motor.settings.endstop_angle} deg for homed motor.')
+            return
 
     step_count = int(degrees * spr / 360) * dir
 
@@ -81,6 +90,7 @@ def move_motor_degrees(motor: Motor, degrees: float):
             )
         else:
             delay = delay_init
+        
         time.sleep(delay)
         gpio.set_pin(motor.settings.step_pin, False)
         time.sleep(delay)

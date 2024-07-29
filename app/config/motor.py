@@ -11,7 +11,7 @@ class MotorConfig:
     acceleration: int
     acceleration_ramp: int
     delay: int
-    direction: int
+    direction: int # 1 or -1
     steps_per_rotation: int
     endstop_angle: float
     max_angle: float # furthest away from endstop

@@ -3,6 +3,7 @@ import io
 from tempfile import TemporaryFile
 import time
 from typing import IO
+import logging
 
 from libcamera import ColorSpace
 ColorSpace.Jpeg = ColorSpace.Sycc
@@ -10,6 +11,9 @@ from picamera2 import Picamera2
 
 from app.controllers.cameras.camera import CameraController
 from app.models.camera import Camera, CameraMode
+
+logger = logging.getLogger('uvicorn.error')
+logger.setLevel(logging.DEBUG)
 
 FOCUS_MIN = 0
 FOCUS_MAX = 15
@@ -59,8 +63,10 @@ class Picamera2Camera(CameraController):
         # value range check
         if focus_val > FOCUS_MAX:
             focus_val = FOCUS_MAX
+            logger.warn(f'Focus value out of bounds. Set to {FOCUS_MAX}')
         elif focus_val < FOCUS_MIN:
             focus_val = FOCUS_MIN
+            logger.warn(f'Focus value out of bounds. Set to {FOCUS_MIN}')
 
         picam2 = Picamera2Camera._get_camera(camera)
         if picam2 is not None: # only works if started before
@@ -68,14 +74,18 @@ class Picamera2Camera(CameraController):
                 picam2.set_controls({"AfMode": 1})
             else:
                 picam2.set_controls({"AfMode": 0, "LensPosition": focus_val})
+        else:
+            logger.warn(f'Camera needs to be started before setting focus.')
 
     @staticmethod
     def set_exposure(camera: Camera, exposure_val: int):
         # value range check
         if exposure_val > EXPOSURE_MAX:
             exposure_val = EXPOSURE_MAX
+            logger.warn(f'Exposure value out of bounds. Set to {EXPOSURE_MAX}')
         elif exposure_val < EXPOSURE_MIN:
             exposure_val = EXPOSURE_MIN
+            logger.warn(f'Exposure value out of bounds. Set to {EXPOSURE_MIN}')
 
         # ms to us
         exposure_val = 1000 * exposure_val
@@ -83,3 +93,5 @@ class Picamera2Camera(CameraController):
         picam2 = Picamera2Camera._get_camera(camera)
         if picam2 is not None: # only works if started before
             picam2.set_controls({"ExposureTime": exposure_val, "AnalogueGain": 1.0})
+        else:
+            logger.warn(f'Camera needs to be started before setting exposure.')

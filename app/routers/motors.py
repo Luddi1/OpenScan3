@@ -23,7 +23,7 @@ async def get_motor(motor_type: MotorType):
 @router.post("/{motor_type}/home")
 async def move_motor(motor_type: MotorType):
     motor = motors.get_motor(motor_type)
-    motors.home_motor(motor)
+    motors.home_motor(motor_type, motor)
 
 
 @router.post("/{motor_type}/move_to")

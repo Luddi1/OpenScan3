@@ -89,6 +89,7 @@ Adjust values to your needs, before.
 <!-- ROADMAP -->
 ## Roadmap
 
+- Check if motor homed for move_to()
 - Add safety timeout to endstop homing routine
 - Check if motor dir settings works with endstop_angle, max_angle in both directions
 - Rotate images 90 degrees
