@@ -30,14 +30,28 @@ Log-in via SSH to the RPi and issue the following commands.
 sudo apt update && sudo apt upgrade -y
 ```
 
-2. Install some python packages system wide. 
+2. If using imx519: Install driver, following the guide at [Arducam](https://docs.arducam.com/Raspberry-Pi-Camera/Native-camera/16MP-IMX519/). 
+Here is the short version:
+```sh
+mkdir ~/imx519
+cd ~/imx519
+wget -O install_pivariety_pkgs.sh https://github.com/ArduCAM/Arducam-Pivariety-V4L2-Driver/releases/download/install_script/install_pivariety_pkgs.sh
+chmod +x install_pivariety_pkgs.sh
+./install_pivariety_pkgs.sh -p libcamera_dev
+./install_pivariety_pkgs.sh -p libcamera_apps
+cd ~
+rm -rf ~/imx519
+sudo sh -c "echo 'dtoverlay=imx519' >> /boot/firmware/config.txt"
+```
+
+3. Install some python packages system wide. 
 We need to do this anyway because `python3-picamera2` can not be installed via pip on a RPi4 (Not enough RAM apparently). 
 
 ```sh
-sudo apt install -y python3-pip python3-venv python3-uvicorn python3-gphoto2 python3-pillow python3-picamera2 python3-matplotlib python3-fastapi python3-numpy python3-rpi.gpio python3-libcamera
+sudo apt install -y git python3-pip python3-venv python3-uvicorn python3-gphoto2 python3-pillow python3-picamera2 python3-matplotlib python3-fastapi python3-numpy python3-rpi.gpio python3-libcamera
 ```
 
-3. Create a python virtual environment, include system-wide packages, and activate venv. 
+4. Create a python virtual environment, include system-wide packages, and activate venv. 
 
 ```sh
 cd
@@ -45,14 +59,14 @@ python3 -m venv --system-site-packages openscan-env
 source openscan-env/bin/activate
 ```
 
-4. Clone the repo
+5. Clone the repo
 
 ```sh
 git clone https://github.com/Luddi1/OpenScan3.git
 cd OpenScan3
 ```
 
-5. Install the last necessary dependencies via pip. 
+6. Install the last necessary dependencies via pip. 
 
 ```sh
 pip install v4l2py orjson python-dotenv pydantic
@@ -75,7 +89,7 @@ Currently, it is setup for the new (black) shield.
 Now the api should be accessible from `http://local_ip:8000`. 
 To access an api playground go to `http://local_ip:8000/docs`
 
-If don't need a GUI you can already do a focus stack set with `tests/photoset.py`. 
+If you don't need a GUI you can already do a focus stack set with `tests/photoset.py`. 
 Open another SSH session, then run 
 ```sh
 source ~/openscan-env/bin/activate
@@ -89,7 +103,6 @@ Adjust values to your needs, before.
 <!-- ROADMAP -->
 ## Roadmap
 
-- Check if motor homed for move_to()
 - Add safety timeout to endstop homing routine
 - Check if motor dir settings works with endstop_angle, max_angle in both directions
 - Rotate images 90 degrees

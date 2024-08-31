@@ -12,19 +12,19 @@ requests.post("http://piscan3d:8000/motors/rotor/home")
 
 # Set camera values
 requests.get("http://127.0.0.1:8000/cameras/0/photo")
-requests.post("http://127.0.0.1:8000/cameras/0/exposure", params={"exposure_value": 45})
+requests.post("http://127.0.0.1:8000/cameras/0/exposure", params={"exposure_value": 85})
 
-# rotor has to stand level, in middle of range
-for i in range(55, -90, -20):
+# Run through absolute values and take focus stacks
+for i in range(55, -90, -10):
     requests.post("http://127.0.0.1:8000/motors/rotor/move_to", params={"degrees": i})
     time.sleep(0.5)
-    for j in range(0, 360, 30):
+    for j in range(0, 360, 15):
         requests.post("http://127.0.0.1:8000/motors/turntable/move_to", params={"degrees": j})
         time.sleep(0.5)
         print("Moved to {0}, {1}".format(i, j))
         requests.put(
             "http://127.0.0.1:8000/projects/openscan_test/focus_stack",
-            params={"camera_id": 0, "focus_min": 6, "focus_max": 13},
+            params={"camera_id": 0, "focus_min": 7, "focus_max": 12},
         )
 
 requests.post("http://127.0.0.1:8000/motors/rotor/move", params={"degrees": 60})
