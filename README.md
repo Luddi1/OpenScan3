@@ -44,6 +44,8 @@ rm -rf ~/imx519
 sudo sh -c "echo 'dtoverlay=imx519' >> /boot/firmware/config.txt"
 ```
 
+Shut down the Pi, connect the camera and restart. 
+
 3. Install some python packages system wide. 
 We need to do this anyway because `python3-picamera2` can not be installed via pip on a RPi4 (Not enough RAM apparently). 
 
