@@ -19,6 +19,7 @@ This fork of OS3 is currently only tested on an OpenScan midi, with RPi4, the ne
 #### Prerequisites
 
 Install Raspberry Pi OS with the [Raspberry Pi Imager](https://www.raspberrypi.com/software/), supplying wifi and ssh login credentials. 
+The installation is tested with Raspberry Pi OS Lite (64-BIT). 
 
 #### Installation
 
@@ -44,13 +45,14 @@ rm -rf ~/imx519
 sudo sh -c "echo 'dtoverlay=imx519' >> /boot/firmware/config.txt"
 ```
 
-Shut down the Pi, connect the camera and restart. 
+Shut down the Pi, connect the camera, and restart. 
+Test if you can take a picture with `libcamera-still -t 5000 -n -o test.jpg`. 
 
 3. Install some python packages system wide. 
 We need to do this anyway because `python3-picamera2` can not be installed via pip on a RPi4 (Not enough RAM apparently). 
 
 ```sh
-sudo apt install -y git python3-pip python3-venv python3-uvicorn python3-gphoto2 python3-pillow python3-picamera2 python3-matplotlib python3-fastapi python3-numpy python3-rpi.gpio python3-libcamera
+sudo apt install -y git python3-pip python3-venv python3-uvicorn python3-pillow python3-picamera2 python3-matplotlib python3-fastapi python3-numpy python3-rpi.gpio python3-libcamera libgphoto2-dev
 ```
 
 4. Create a python virtual environment, include system-wide packages, and activate venv. 
@@ -71,7 +73,7 @@ cd OpenScan3
 6. Install the last necessary dependencies via pip. 
 
 ```sh
-pip install v4l2py orjson python-dotenv pydantic
+pip install v4l2py==0.6.1 gphoto2==2.3.4 orjson python-dotenv pydantic
 ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
